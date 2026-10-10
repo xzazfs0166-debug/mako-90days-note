@@ -6,7 +6,17 @@ const pages=[
 ['私が私にしてあげたこと','よく選んだケア、本人が心地よかったと残したこと、続けたいこと。自分にかけた言葉も一冊に残ります。','<p>私がよく選んだこと</p><blockquote>夕方に少し歩く。<br>温かいお茶でひと息つく。</blockquote><p>鏡の私に、伝えた言葉</p><blockquote>「全部今日やらなくても大丈夫」</blockquote>'],
 ['わたしの取扱説明書','最後は、私の言葉で完成させるページ。これからの暮らしで開きたくなる、自分への手紙です。','<p>私の身体が喜ぶこと</p><blockquote>ゆっくり食べること。<br>疲れたら、少し休むこと。</blockquote><p>90日過ごした私から、これからの私へ</p><blockquote>揺れても、大丈夫。<br>私のペースを、忘れずに。</blockquote>']
 ];
-function showPage(i){document.querySelector('#page-number').textContent=`PAGE ${String(i+1).padStart(2,'0')} / 06`;document.querySelector('#page-title').textContent=pages[i][0];document.querySelector('#page-description').textContent=pages[i][1];document.querySelector('#page-content').innerHTML=pages[i][2];document.querySelectorAll('[data-page]').forEach(b=>b.setAttribute('aria-selected',String(Number(b.dataset.page)===i)))}
+pages[0][2]=pages[0][2].replace('<tr><td>疲れ','<tr><td>睡眠</td><td>浅め</td><td>ふつう</td><td>よく眠れた</td><td>よく眠れた</td></tr><tr><td>お腹</td><td>張る感じ</td><td>いつもの感じ</td><td>張る感じ</td><td>いつもの感じ</td></tr><tr><td>疲れ');
+pages[1][2]+='<h4>節目ごとのチェックも並べて</h4><p>DAY1・30・60・90で、同じ項目のチェック数と内容を見比べます。</p><h4>私に出やすかったサイン</h4><p>肩が重くなる／疲れが抜けにくい／お腹が張る</p>';
+pages[2][2]+='<h4>出来事と、その時の私</h4><p>子どもが宿題をせず、イライラした日。<br>公園を歩いて、少しホッとした日。</p><p>気持ちの波と、その日に残した出来事や場所を一緒に振り返ります。</p>';
+pages[3][2]+='<h4>同じ日の記録を、一緒に眺める</h4><p>睡眠／忙しさ／お通じ／インナーケアを表示して、身体と心の波に重ねます。</p><p class="preview-note">この見本は表示イメージです。原因や商品の効果を決めつけるページではありません。</p>';
+pages[4][2]+='<h4>心地よかったと残したこと</h4><p>夜、お風呂にゆっくり入った。肩の力が少し抜けた。</p><h4>続けたいこと</h4><p>予定のない時間を、少しつくる。</p><h4>私への言葉</h4><blockquote>「今日は休んでいいよ」<br>「全部、私が背負わなくていい」<br>「私はほんまはどうしたい？」</blockquote><p class="preview-note">毎日のケアと言葉、約13週間のWEEKカードも振り返ります。</p>';
+pages[5][2]=[['私の身体が喜ぶこと','ゆっくり食べる。疲れたら少し休む。'],['私の身体が出してくれるサイン','肩に力が入る。夕方、身体が重くなる。'],['心がしんどくなる時の私の口ぐせ','「私がやらなきゃ」「早くしなきゃ」。'],['そんな時、私にしてあげたいこと','一度座ってお茶を飲む。誰かに頼ってみる。'],['私に戻るための言葉','全部、今日やらなくても大丈夫。'],['90日過ごした私から、これからの私へ','揺れる日も、私の一日。私のペースを忘れずに。']].map(([title,text])=>`<h4>${title}</h4><blockquote>${text}</blockquote>`).join('');
+let currentPage=0;
+function showPage(i){currentPage=i;document.querySelector("#book-position").textContent=`${i+1} / 6`;document.querySelector("#book-prev").disabled=i===0;document.querySelector("#book-next").disabled=i===5;document.querySelector('#page-number').textContent=`PAGE ${String(i+1).padStart(2,'0')} / 06`;document.querySelector('#page-title').textContent=pages[i][0];document.querySelector('#page-description').textContent=pages[i][1];document.querySelector('#page-content').innerHTML=pages[i][2];document.querySelectorAll('[data-page]').forEach(b=>b.setAttribute('aria-selected',String(Number(b.dataset.page)===i)))}
 document.querySelectorAll('[data-page]').forEach(b=>b.addEventListener('click',()=>showPage(Number(b.dataset.page))));showPage(0);
 document.querySelector('#apply').addEventListener('click',()=>{document.querySelector('#apply-info').hidden=false;document.querySelector('#apply-info').scrollIntoView({behavior:'smooth',block:'center'})});
 document.querySelector('#copy').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(document.querySelector('textarea').value);document.querySelector('#copy-status').textContent='コピーしました。まこのLINEに貼り付けて送ってください。'}catch{document.querySelector('textarea').select();document.querySelector('#copy-status').textContent='文章を選択しました。コピーしてまこのLINEに貼り付けてください。'}});
+
+document.querySelector("#book-prev").addEventListener("click",()=>showPage(Math.max(0,currentPage-1)));
+document.querySelector("#book-next").addEventListener("click",()=>showPage(Math.min(5,currentPage+1)));
