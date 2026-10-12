@@ -15,7 +15,7 @@ pages[5][2]=[['私の身体が喜ぶこと','ゆっくり食べる。疲れた�
 let currentPage=0;
 function showPage(i){currentPage=i;document.querySelector("#book-position").textContent=`${i+1} / 6`;document.querySelector("#book-prev").disabled=i===0;document.querySelector("#book-next").disabled=i===5;document.querySelector('#page-number').textContent=`PAGE ${String(i+1).padStart(2,'0')} / 06`;document.querySelector('#page-title').textContent=pages[i][0];document.querySelector('#page-description').textContent=pages[i][1];document.querySelector('#page-content').innerHTML=pages[i][2];document.querySelectorAll('[data-page]').forEach(b=>b.setAttribute('aria-selected',String(Number(b.dataset.page)===i)))}
 document.querySelectorAll('[data-page]').forEach(b=>b.addEventListener('click',()=>showPage(Number(b.dataset.page))));showPage(0);
-document.querySelector('#apply').addEventListener('click',()=>{document.querySelector('#apply-info').hidden=false;document.querySelector('#apply-info').scrollIntoView({behavior:'smooth',block:'center'})});
+
 document.querySelector('#copy').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(document.querySelector('textarea').value);document.querySelector('#copy-status').textContent='コピーしました。まこのLINEに貼り付けて送ってください。'}catch{document.querySelector('textarea').select();document.querySelector('#copy-status').textContent='文章を選択しました。コピーしてまこのLINEに貼り付けてください。'}});
 
 document.querySelector("#book-prev").addEventListener("click",()=>showPage(Math.max(0,currentPage-1)));
