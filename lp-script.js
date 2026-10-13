@@ -20,3 +20,5 @@ document.querySelector('#copy').addEventListener('click',async()=>{try{await nav
 
 document.querySelector("#book-prev").addEventListener("click",()=>showPage(Math.max(0,currentPage-1)));
 document.querySelector("#book-next").addEventListener("click",()=>showPage(Math.min(5,currentPage+1)));
+
+function openHashDetails(){const target=document.getElementById(location.hash.slice(1));if(target?.tagName==='DETAILS')target.open=true;}window.addEventListener('hashchange',openHashDetails);openHashDetails();
